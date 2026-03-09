@@ -7,7 +7,7 @@
 - **Task Details**:
   - Title and descriptions (short and detailed).
   - Assignees (support for multiple team members).
-  - Due dates.
+  - Dynamic Due Date Selection (user-defined dates map directly to card tiles).
   - Priority labels (High, Medium, Low).
   - Subtasks with completion tracking.
   - Attachments and comments counters.

@@ -115,7 +115,7 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState<any>(null);
-  const [newTask, setNewTask] = useState({ title: '', description: '', assignees: [] as string[] });
+  const [newTask, setNewTask] = useState({ title: '', description: '', assignees: [] as string[], dueDate: '' });
 
   // Toolbar states
   const [sortBy, setSortBy] = useState<'default' | 'title'>('default');
@@ -333,12 +333,20 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
   const handleAddTask = () => {
     if (!newTask.title.trim()) return;
     
+    let formattedDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    if (newTask.dueDate) {
+      const dateObj = new Date(newTask.dueDate);
+      if (!isNaN(dateObj.getTime())) {
+        formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      }
+    }
+
     const newCard = {
       id: `c${Date.now()}`,
       title: newTask.title,
       description: newTask.description,
       detailedDescription: newTask.description,
-      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+      date: formattedDate,
       users: newTask.assignees,
       attachments: 0,
       comments: 0,
@@ -356,7 +364,7 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
 
     setBoardData(newBoardData);
     setIsModalOpen(false);
-    setNewTask({ title: '', description: '', assignees: [] });
+    setNewTask({ title: '', description: '', assignees: [], dueDate: '' });
   };
 
   const toggleAssignee = (userId: string) => {
@@ -544,6 +552,16 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
                   onChange={e => setNewTask({...newTask, description: e.target.value})}
                   className="w-full bg-bg-deep border border-border-subtle rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent transition-colors resize-none h-24"
                   placeholder="Brief description..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-text-muted mb-1">Due Date</label>
+                <input 
+                  type="date" 
+                  value={newTask.dueDate}
+                  onChange={e => setNewTask({...newTask, dueDate: e.target.value})}
+                  className="w-full bg-bg-deep border border-border-subtle rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent transition-colors [color-scheme:dark]"
                 />
               </div>
               
