@@ -125,6 +125,7 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
   const [isAddAssigneeOpen, setIsAddAssigneeOpen] = useState(false);
   const [newAssigneeEmail, setNewAssigneeEmail] = useState('');
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   // Drag and drop file states
   const [isDraggingFile, setIsDraggingFile] = useState(false);
@@ -239,6 +240,29 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
     firePulse();
     setTimeout(firePulse, 300);
     setTimeout(firePulse, 600);
+  };
+
+  const triggerCopyConfetti = () => {
+    const colors = ['#FFA500', '#333333', '#ffffff']; // Orange, Dark gray, White
+
+    // Left side blast
+    confetti({
+      particleCount: 100,
+      angle: 60,
+      spread: 70,
+      origin: { x: 0, y: 0.8 },
+      colors: colors,
+      startVelocity: 45,
+    });
+    // Right side blast
+    confetti({
+      particleCount: 100,
+      angle: 120,
+      spread: 70,
+      origin: { x: 1, y: 0.8 },
+      colors: colors,
+      startVelocity: 45,
+    });
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -791,9 +815,11 @@ export function KanbanBoard({ filterUser, setFilterUser }: { filterUser?: string
               />
               <button onClick={() => {
                 navigator.clipboard.writeText("https://kanban.app/p/1a2b3c");
-                alert("Link copied to clipboard!");
-              }} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-colors">
-                Copy
+                setIsCopied(true);
+                triggerCopyConfetti();
+                setTimeout(() => setIsCopied(false), 2000);
+              }} className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isCopied ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-white/10 hover:bg-white/20 text-white'}`}>
+                {isCopied ? 'Copied!' : 'Copy'}
               </button>
             </div>
             <div className="flex justify-end">

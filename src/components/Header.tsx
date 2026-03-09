@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Search, Settings, Bell, ChevronDown } from 'lucide-react';
+import { SettingsModal } from './SettingsModal';
+import { ProfileModal } from './ProfileModal';
 
 export function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [notifications, setNotifications] = useState([
     { id: 1, text: 'Allen assigned you to "Technical Feasibility"', time: '10m ago', unread: true },
     { id: 2, text: 'Ayush commented on "Market Analysis"', time: '1h ago', unread: true },
@@ -31,7 +35,10 @@ export function Header() {
       </div>
       
       <div className="flex items-center gap-6">
-        <button className="text-text-muted hover:text-white transition-colors">
+        <button 
+          onClick={() => setIsSettingsOpen(true)}
+          className="text-text-muted hover:text-white transition-colors"
+        >
           <Settings className="w-5 h-5" />
         </button>
         <div className="relative">
@@ -72,12 +79,18 @@ export function Header() {
             </>
           )}
         </div>
-        <div className="flex items-center gap-3 pl-6 border-l border-border-subtle cursor-pointer hover:opacity-80 transition-opacity">
+        <div 
+          onClick={() => setIsProfileOpen(true)}
+          className="flex items-center gap-3 pl-6 border-l border-border-subtle cursor-pointer hover:opacity-80 transition-opacity"
+        >
           <img src="https://picsum.photos/seed/allen/32/32" alt="ALLEN" className="w-8 h-8 rounded-full object-cover" referrerPolicy="no-referrer" />
           <span className="text-sm font-medium text-white">ALLEN</span>
           <ChevronDown className="w-4 h-4 text-text-muted" />
         </div>
       </div>
+      
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+      <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </header>
   );
 }

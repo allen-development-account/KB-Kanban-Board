@@ -24,7 +24,19 @@
 ## Collaboration & Sharing
 - **Add Assignee**: Modal to invite new team members via email.
 - **Share Project**: Modal to generate and copy a shareable link to the board.
+  - **Interactive Copy Button**: Features a green gradient success state and a custom confetti blast (Orange, Dark Gray, White) upon copying the link.
 - **More Options Menu**: Dropdown for exporting the board, accessing settings, and archiving the board.
+
+## Settings & Profile
+- **Settings Page**: Comprehensive settings modal with tabs for:
+  - **General**: Theme selection (Light, Dark, System), Language, and Timezone preferences.
+  - **Notifications**: Granular control over email and push notifications for assignments, mentions, and due dates.
+  - **Board Preferences**: Customize default view (Kanban/List), visibility of completed tasks, and compact mode.
+  - **Advanced**: Options to export data (JSON, CSV) and a danger zone for account deletion.
+- **Profile Page**: Detailed profile modal with tabs for:
+  - **Personal Info**: Update profile photo, full name, email, and bio.
+  - **Security**: Manage password, enable Two-Factor Authentication (2FA), and view/revoke active sessions.
+  - **Activity Log**: View a timeline of recent actions performed on the account.
 
 ## UI/UX
 - **Dark Mode Interface**: Sleek, modern dark theme built with Tailwind CSS.
