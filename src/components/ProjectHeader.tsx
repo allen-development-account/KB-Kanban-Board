@@ -1,7 +1,7 @@
 import React from 'react';
 import { Monitor, SlidersHorizontal, ArrowUpDown, LayoutGrid, Eye, UserPlus, Share2, MoreHorizontal } from 'lucide-react';
 
-export function ProjectHeader() {
+export function ProjectHeader({ filterUser, setFilterUser }: { filterUser?: string | null, setFilterUser?: (user: string | null) => void }) {
   return (
     <div className="flex-shrink-0 px-8 pt-8 pb-4">
       <div className="flex items-start justify-between">
@@ -22,7 +22,7 @@ export function ProjectHeader() {
             <span className="text-sm font-medium text-white">20 Sep 2021</span>
           </div>
           <div className="flex items-center ml-4">
-            <UserPills users={['allen', 'ayush', 'edwin']} />
+            <UserPills users={['allen', 'ayush', 'edwin']} filterUser={filterUser} setFilterUser={setFilterUser} />
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@ function ToolbarButton({ icon, label }: { icon: React.ReactNode, label: string }
   );
 }
 
-export function UserPills({ users }: { users: string[] }) {
+export function UserPills({ users, filterUser, setFilterUser }: { users: string[], filterUser?: string | null, setFilterUser?: (user: string | null) => void }) {
   const getUserName = (id: string) => {
     switch(id.toLowerCase()) {
       case 'allen': return 'Allen';
@@ -50,23 +50,27 @@ export function UserPills({ users }: { users: string[] }) {
   };
 
   const getUserColor = (id: string) => {
+    const isActive = filterUser === id;
+    const baseClasses = isActive ? 'ring-2 ring-accent ring-offset-2 ring-offset-bg-deep' : '';
+    
     switch(id.toLowerCase()) {
-      case 'allen': return 'bg-zinc-800 text-zinc-300 border-zinc-700';
-      case 'ayush': return 'bg-zinc-700 text-zinc-200 border-zinc-600';
-      case 'edwin': return 'bg-zinc-600 text-zinc-100 border-zinc-500';
-      default: return 'bg-bg-surface text-text-muted border-border-subtle';
+      case 'allen': return `${baseClasses} bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700`;
+      case 'ayush': return `${baseClasses} bg-zinc-700 text-zinc-200 border-zinc-600 hover:bg-zinc-600`;
+      case 'edwin': return `${baseClasses} bg-zinc-600 text-zinc-100 border-zinc-500 hover:bg-zinc-500`;
+      default: return `${baseClasses} bg-bg-surface text-text-muted border-border-subtle hover:bg-white/5`;
     }
   };
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
       {users.map((u, i) => (
-        <span 
+        <button 
           key={i}
-          className={`px-3 py-1 rounded-full border text-xs font-medium ${getUserColor(u)}`}
+          onClick={() => setFilterUser && setFilterUser(filterUser === u ? null : u)}
+          className={`px-3 py-1 rounded-full border text-xs font-medium cursor-pointer transition-all ${getUserColor(u)} ${setFilterUser ? 'hover:scale-105' : ''}`}
         >
           {getUserName(u)}
-        </span>
+        </button>
       ))}
     </div>
   );
